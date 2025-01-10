@@ -17,4 +17,8 @@ but since I just switched environments from Win + Visual Studio -> Mint Linux  +
 I implemented standard crud, since I was a bit afraid that I would lose time on my environment,
 Looking back that was wrong, I could do event sourcing approach as well in another hour.
 
+Just one more note I forgot to change my git config user.name so some commits are under a different name, 
+I was helping a friend out this morning, so if you see, don't get confused.
+
+
 
