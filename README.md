@@ -6,7 +6,7 @@ docker run -e "ACCEPT_EULA=Y" -e "SA_PASSWORD=Test12345678" -p 1433:1433 --name 
 https://localhost:7019/openapi/v1.json
 
 
-## Import postman collection to testg
+## Import postman collection to test
 DigilizeTest - v1.postman_collection.json
 
 # Note
