@@ -1,5 +1,6 @@
 using System;
 using DigilizeTest.Users.Dto;
+using DigilizeTest.Users.Models;
 
 namespace DigilizeTest.Users;
 
@@ -56,5 +57,20 @@ public static class Endpoints
                 }
                 return Results.Ok(deletedUserId); // Return the deleted id
             });
+
+
+            /// POST: api/users/valid-list
+            /// Wanted to add some more stuff to show what else can be done
+            groupEndpointRouteBuilder.MapPost("valid-list", async (List<User> users, UserService userService) =>
+            {
+                var userIds = await userService.InsertValidUserList(users);
+                return Results.Created("api/users/valid-list", userIds);
+            })
+            .WithName("InsertValidUserList")
+            .WithSummary("Inserts a list of valid users")
+            .WithDescription("Filters the input list of users, validates them, and inserts only the valid users into the database.")
+            .Produces<List<Guid>>(StatusCodes.Status201Created)
+            .Produces(StatusCodes.Status400BadRequest)
+            .Accepts<List<User>>("application/json");
         }
 }

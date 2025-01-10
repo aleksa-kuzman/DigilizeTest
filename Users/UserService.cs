@@ -1,4 +1,5 @@
 using System;
+using DigilizeTest.Common;
 using DigilizeTest.Common.Database;
 using DigilizeTest.Users.Dto;
 using DigilizeTest.Users.Models;
@@ -44,11 +45,27 @@ public class UserService
         return entity.Entity.Id;
     }
 
+    public async Task<List<Guid>> InsertValidUserList(List<User> users)
+    {
+       var filteredUsers =  users.ValidateAndFilter();
+
+       var existingUserIds = await _context.Users.Select(u => u.Id).ToListAsync();
+
+       var newUsers = filteredUsers.Where(m=> !existingUserIds.Contains(m.Id)).ToList();
+    
+       await _context.Users.AddRangeAsync(newUsers);
+
+       await _context.SaveChangesAsync();
+
+       return  newUsers.Select(m=>m.Id).ToList();
+    }
 
 
     public async Task<Guid?> UpdateUser(UpdateUserDto dto, Guid id)
     {
         var entityToUpdate = await _context.Users.Where(m => m.Id == id).FirstOrDefaultAsync();
+
+        
 
         if (entityToUpdate == null)
         {
