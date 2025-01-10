@@ -1,4 +1,7 @@
 using DigilizeTest.Common;
+using DigilizeTest.Common.Database;
+using DigilizeTest.Companies;
+using DigilizeTest.Users;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 
@@ -7,6 +10,10 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
+
+builder.Services.AddTransient(typeof(CompanyService));
+builder.Services.AddTransient(typeof(UserService));
+
 
 builder.Services.AddDbContext<AppDbContext> (opt => {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("ConnectionString"), options => {
@@ -19,8 +26,9 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
 }
+
+app.MapOpenApi();
 
 app.UseHttpsRedirection();
 
@@ -29,6 +37,9 @@ var summaries = new[]
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
 };
 
+
+app.MapCompanyEndpoints();
+app.MapUserEndpoints();
 
 
 app.MapGet("/weatherforecast", () =>
